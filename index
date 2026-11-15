@@ -398,8 +398,8 @@
 // ============================================================================
 // 1. SUPABASE YAPILANDIRMASI
 // ============================================================================
-const SUPABASE_URL = 'BURAYA_SUPABASE_PROJECT_URL_GELECEK';
-const SUPABASE_ANON_KEY = 'BURAYA_SUPABASE_ANON_KEY_GELECEK';
+const SUPABASE_URL = 'https://qrjqaxylbunkcatepfoh.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_UBEUc4qiRfrPXgg1udc_4Q_2uzPU6gh';
 let sbClient = null;
 
 if (SUPABASE_URL.startsWith('http')) {
