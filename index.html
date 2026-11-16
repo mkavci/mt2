@@ -3,20 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Metin2 Pro PvP & Beceri Simülatörü (M/G/P Motoru)</title>
+    <title>Mobile2 Global - Pro PvP & Efsun Simülatörü</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         body { background-color: #070a12; color: #e2e8f0; font-family: 'Inter', 'Segoe UI', sans-serif; }
         .panel { background: #0f1626; border: 1px solid #1e293b; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
-        .inp { background: #070a12; border: 1px solid #334155; color: #f8fafc; border-radius: 6px; padding: 6px 10px; width: 100%; font-size: 0.875rem; transition: border-color 0.2s; }
+        .inp { background: #070a12; border: 1px solid #334155; color: #f8fafc; border-radius: 6px; padding: 6px 10px; width: 100%; font-size: 0.875rem; }
         .inp:focus { outline: none; border-color: #f59e0b; }
-        .tab-btn { padding: 6px 12px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-        .tab-active { background: #f59e0b; color: #070a12; }
-        .tab-inactive { background: #1e293b; color: #94a3b8; }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #070a12; }
-        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
     </style>
 </head>
 <body class="p-3 md:p-6">
@@ -26,10 +20,10 @@
     <header class="flex flex-col md:flex-row justify-between items-center mb-6 border-b border-slate-800 pb-4 gap-4">
         <div>
             <div class="flex items-center gap-3">
-                <span class="bg-amber-500/10 text-amber-400 border border-amber-500/30 px-2.5 py-0.5 rounded text-xs font-bold tracking-wider">v2.5 ENGINE</span>
-                <h1 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight">METİN2 <span class="text-amber-500">PRO</span> HASAR & EFSUN SİMÜLATÖRÜ</h1>
+                <span class="bg-amber-500 text-slate-950 px-2.5 py-0.5 rounded text-xs font-extrabold tracking-wider">MOBILE2 GLOBAL EDITION</span>
+                <h1 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight">PVM / PVP EFSUN & HASAR SİMÜLATÖRÜ</h1>
             </div>
-            <p class="text-slate-400 text-xs mt-1">Kaynak Kod Tabanlı (char_skill.cpp) Beceri (1-20 / M / G / P), Statü, Biyolog, Simya ve PvP Savunma Motoru</p>
+            <p class="text-slate-400 text-xs mt-1">Mobile2 Global PvP Katsayı Dengelemesi, M/G/P Beceri Eğrisi ve Canlı Kalibrasyon Motoru</p>
         </div>
         <div class="flex flex-wrap gap-2">
             <button onclick="saveSnapshot()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-3.5 py-2 rounded-lg text-xs font-semibold transition">
@@ -44,26 +38,42 @@
         </div>
     </header>
 
+    <!-- MOBILE2 GLOBAL KALİBRASYON BARI -->
+    <div class="panel p-4 mb-5 border-l-4 border-l-amber-500 bg-amber-950/10 flex flex-col lg:flex-row items-center justify-between gap-4">
+        <div class="text-xs">
+            <span class="font-bold text-amber-400 text-sm block">🎯 Mobile2 Global Hassas Kalibrasyon (Sıfır Yanılma Modu)</span>
+            <span class="text-slate-300">Mevcut statü ve efsunlarını girdikten sonra, oyunda bu ayarlarla attığın <b>gerçek normal (kritiksiz) beceri hasarını</b> sağa yazıp "Kalibre Et"e bas. Sistem sunucu çarpanını kilitler.</span>
+        </div>
+        <div class="flex items-center gap-2 w-full lg:w-auto">
+            <input type="number" id="real_game_hit" placeholder="Oyundaki gerçek hasar (Örn: 5400)" class="inp w-56 border-amber-500/50">
+            <button onclick="calibrateServer()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-4 py-2 rounded-lg text-xs whitespace-nowrap transition">
+                Kalibre Et
+            </button>
+            <span id="calib_badge" class="text-xs font-mono bg-slate-900 border border-slate-700 px-2.5 py-2 rounded text-emerald-400 whitespace-nowrap">
+                Çarpan: 0.58x (M2G)
+            </span>
+        </div>
+    </div>
+
     <!-- ANA 3 SÜTUNLU YAPI -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
 
-        <!-- SOL SÜTUN: SALDIRAN KARAKTER & SKILL MOTORU (5 Kolon) -->
-        <div class="lg:col-span-5 panel p-5 border-t-4 border-t-red-500 space-y-5">
+        <!-- SOL SÜTUN: SALDIRAN KARAKTER -->
+        <div class="lg:col-span-5 panel p-5 border-t-4 border-t-red-500 space-y-4">
             <div class="flex justify-between items-center border-b border-slate-800 pb-3">
                 <h2 class="text-lg font-bold text-red-400">⚔️ SALDIRAN KARAKTER</h2>
-                <span id="atk_power_badge" class="text-xs bg-red-500/10 text-red-300 border border-red-500/20 px-2 py-1 rounded">Efektif Saldırı: 0</span>
+                <span class="text-xs text-slate-400">Karakter Ekranı Değerlerini Girin</span>
             </div>
 
-            <!-- Sınıf ve Eğitim Seçimi -->
+            <!-- Sınıf ve Eğitim -->
             <div class="grid grid-cols-2 gap-3">
                 <div>
                     <label class="block text-xs text-slate-400 mb-1">Karakter Sınıfı</label>
                     <select id="cls_select" class="inp font-semibold text-amber-400" onchange="onClassChange()">
-                        <option value="warrior">Savaşçı (Warrior)</option>
-                        <option value="ninja">Ninja (Assassin)</option>
+                        <option value="warrior">Savaşçı</option>
+                        <option value="ninja">Ninja</option>
                         <option value="sura">Sura</option>
-                        <option value="shaman">Şaman (Shaman)</option>
-                        <option value="lycan">Lycan</option>
+                        <option value="shaman">Şaman</option>
                     </select>
                 </div>
                 <div>
@@ -72,260 +82,221 @@
                 </div>
             </div>
 
-            <!-- Beceri ve Seviye (M / G / P) Seçimi -->
+            <!-- Beceri ve Seviye -->
             <div class="bg-slate-900/90 p-3.5 rounded-lg border border-slate-800 space-y-3">
                 <div class="grid grid-cols-12 gap-2 items-end">
                     <div class="col-span-7">
-                        <label class="block text-xs text-amber-400 font-semibold mb-1">Test Edilecek Beceri (Skill)</label>
-                        <select id="skill_select" class="inp" onchange="calculate()"></select>
+                        <label class="block text-xs text-amber-400 font-semibold mb-1">Test Edilecek Beceri</label>
+                        <select id="skill_select" class="inp" onchange="updateSkillModifiers(); calculate();"></select>
                     </div>
                     <div class="col-span-5">
                         <label class="block text-xs text-amber-400 font-semibold mb-1">Beceri Seviyesi</label>
                         <select id="skill_grade" class="inp font-bold text-emerald-400" onchange="calculate()">
-                            <option value="P" selected>P (Perfect Master)</option>
-                            <option value="G10">G10 (Grand Master)</option>
-                            <option value="G5">G5 (Grand Master)</option>
-                            <option value="G1">G1 (Grand Master)</option>
-                            <option value="M10">M10 (Master)</option>
-                            <option value="M5">M5 (Master)</option>
-                            <option value="M1">M1 (Master)</option>
+                            <option value="P" selected>P (Perfect)</option>
+                            <option value="G10">G10</option>
+                            <option value="G5">G5</option>
+                            <option value="G1">G1</option>
+                            <option value="M10">M10</option>
+                            <option value="M7">M7</option>
+                            <option value="M4">M4</option>
+                            <option value="M1">M1</option>
                             <option value="15">Seviye 15</option>
                             <option value="1">Seviye 1</option>
                         </select>
                     </div>
                 </div>
-
-                <!-- Özel Durum Koşulları (Suikast Arkadan, Kritik Buff vb.) -->
-                <div id="skill_modifiers" class="flex flex-wrap gap-3 pt-1 text-xs text-slate-300"></div>
+                <div id="skill_modifiers" class="flex flex-wrap gap-3 text-xs text-slate-300"></div>
             </div>
 
-            <!-- Statüler (VIT, INT, STR, DEX) -->
+            <!-- Statüler -->
             <div>
-                <label class="block text-xs font-bold text-slate-300 mb-2 uppercase tracking-wider">Karakter Statüleri (İtemler Dahil Toplam)</label>
+                <label class="block text-xs font-bold text-slate-300 mb-1.5 uppercase">Statüler (Toplam)</label>
                 <div class="grid grid-cols-4 gap-2">
                     <div>
-                        <span class="text-[11px] text-slate-400">VIT (HP)</span>
+                        <span class="text-[11px] text-slate-400">VIT</span>
                         <input type="number" id="stat_vit" value="90" class="inp text-center" oninput="calculate()">
                     </div>
                     <div>
-                        <span class="text-[11px] text-slate-400">INT (SP)</span>
+                        <span class="text-[11px] text-slate-400">INT</span>
                         <input type="number" id="stat_int" value="90" class="inp text-center" oninput="calculate()">
                     </div>
                     <div>
-                        <span class="text-[11px] text-slate-400">STR (Güç)</span>
-                        <input type="number" id="stat_str" value="135" class="inp text-center" oninput="calculate()">
+                        <span class="text-[11px] text-slate-400">STR</span>
+                        <input type="number" id="stat_str" value="125" class="inp text-center" oninput="calculate()">
                     </div>
                     <div>
-                        <span class="text-[11px] text-slate-400">DEX (Çevik)</span>
-                        <input type="number" id="stat_dex" value="110" class="inp text-center" oninput="calculate()">
+                        <span class="text-[11px] text-slate-400">DEX</span>
+                        <input type="number" id="stat_dex" value="105" class="inp text-center" oninput="calculate()">
                     </div>
                 </div>
             </div>
 
-            <!-- Silah ve Temel Saldırı Değerleri -->
+            <!-- Karakter Ekranı Saldırı Değerleri -->
             <div class="grid grid-cols-2 gap-3">
                 <div>
-                    <label class="block text-xs text-slate-400 mb-1">Karakter Ekranı Saldırı Değeri</label>
-                    <input type="number" id="atk_phys_val" value="1650" class="inp" oninput="calculate()">
+                    <label class="block text-xs text-slate-400 mb-1">Saldırı Değeri (C Ekranı Ortalaması)</label>
+                    <input type="number" id="atk_phys_val" value="1450" class="inp" oninput="calculate()">
                 </div>
                 <div>
-                    <label class="block text-xs text-slate-400 mb-1">Karakter Ekranı Büyülü Saldırı</label>
-                    <input type="number" id="atk_mag_val" value="1150" class="inp" oninput="calculate()">
+                    <label class="block text-xs text-slate-400 mb-1">Büyülü Saldırı Değeri (C Ekranı)</label>
+                    <input type="number" id="atk_mag_val" value="980" class="inp" oninput="calculate()">
                 </div>
             </div>
 
             <!-- Saldırı Efsunları -->
             <div>
-                <label class="block text-xs font-bold text-slate-300 mb-2 uppercase tracking-wider">Saldırı Efsunları & Çarpanlar</label>
+                <label class="block text-xs font-bold text-slate-300 mb-1.5 uppercase">Efsunlar & Bonuslar (%)</label>
                 <div class="grid grid-cols-3 gap-2.5 text-xs">
                     <div>
                         <span class="text-slate-400">Yarı İnsan (%)</span>
-                        <input type="number" id="bon_halfhuman" value="65" class="inp" oninput="calculate()">
+                        <input type="number" id="bon_halfhuman" value="50" class="inp" oninput="calculate()">
                     </div>
                     <div>
                         <span class="text-slate-400">Beceri Hasarı (%)</span>
-                        <input type="number" id="bon_skill" value="25" class="inp" oninput="calculate()">
+                        <input type="number" id="bon_skill" value="18" class="inp" oninput="calculate()">
                     </div>
                     <div>
                         <span class="text-slate-400">Ortalama Zarar (%)</span>
-                        <input type="number" id="bon_avg" value="45" class="inp" oninput="calculate()">
+                        <input type="number" id="bon_avg" value="35" class="inp" oninput="calculate()">
                     </div>
                     <div>
                         <span class="text-slate-400">Sınıfa Karşı Güç (%)</span>
-                        <input type="number" id="bon_vs_class" value="35" class="inp" oninput="calculate()">
+                        <input type="number" id="bon_vs_class" value="20" class="inp" oninput="calculate()">
                     </div>
                     <div>
                         <span class="text-slate-400">Kritik Şansı (%)</span>
-                        <input type="number" id="bon_crit" value="65" class="inp" oninput="calculate()">
+                        <input type="number" id="bon_crit" value="50" class="inp" oninput="calculate()">
                     </div>
                     <div>
                         <span class="text-slate-400">Delici Şansı (%)</span>
-                        <input type="number" id="bon_pierce" value="55" class="inp" oninput="calculate()">
+                        <input type="number" id="bon_pierce" value="40" class="inp" oninput="calculate()">
                     </div>
                     <div>
                         <span class="text-slate-400">Büyü Hızı (%)</span>
-                        <input type="number" id="bon_cast" value="185" class="inp" oninput="calculate()">
-                    </div>
-                    <div>
-                        <span class="text-slate-400">Saldırı Hızı (%)</span>
-                        <input type="number" id="bon_aspd" value="165" class="inp" oninput="calculate()">
+                        <input type="number" id="bon_cast" value="160" class="inp" oninput="calculate()">
                     </div>
                     <div>
                         <span class="text-slate-400">Büyü Bozma (%)</span>
                         <input type="number" id="bon_antimagic" value="25" class="inp" oninput="calculate()">
                     </div>
+                    <div>
+                        <span class="text-slate-400">Ekstra Hasar (Yüzük/Pet %)</span>
+                        <input type="number" id="bon_extra_dmg" value="20" class="inp" oninput="calculate()">
+                    </div>
                 </div>
             </div>
 
-            <!-- Biyolog & Simya & Ekstralar -->
-            <div class="bg-slate-900/60 p-3 rounded-lg border border-slate-800 space-y-2">
-                <label class="block text-xs font-bold text-amber-400 uppercase">Biyolog, Simya & Ekstra Çarpanlar</label>
-                <div class="grid grid-cols-2 gap-2 text-xs">
-                    <div>
-                        <span class="text-slate-400">Biyolog (92/94 Seçimi)</span>
-                        <select id="bio_choice" class="inp" onchange="calculate()">
-                            <option value="str_str">Çift Saldırı Değeri (+111 STR/ATK)</option>
-                            <option value="str_hp">Saldırı + HP (+51 ATK)</option>
-                            <option value="hp_hp">Çift HP (Saldırı Bonusu Yok)</option>
-                        </select>
-                    </div>
-                    <div>
-                        <span class="text-slate-400">Simya Seti (Yakut & Elmas)</span>
-                        <select id="alchemy_tier" class="inp" onchange="calculate()">
-                            <option value="mythic_exc">Mitsi Kusursuz (+360 ATK, +18 Bec)</option>
-                            <option value="mythic_bri">Mitsi Parlak (+270 ATK, +14 Bec)</option>
-                            <option value="mythic_mat">Mitsi Mat (+180 ATK, +9 Bec)</option>
-                            <option value="none">Simya Yok / Kapalı</option>
-                        </select>
-                    </div>
+            <!-- Biyolog & Simya -->
+            <div class="bg-slate-900/60 p-3 rounded-lg border border-slate-800 grid grid-cols-2 gap-2 text-xs">
+                <div>
+                    <span class="text-slate-400">Biyolog (92/94)</span>
+                    <select id="bio_choice" class="inp" onchange="calculate()">
+                        <option value="none">Henüz Yapılmadı / Diğer</option>
+                        <option value="str_str">Çift Saldırı (+111 ATK)</option>
+                        <option value="str_hp">Tek Saldırı (+51 ATK)</option>
+                    </select>
                 </div>
-                <div class="flex flex-wrap gap-4 pt-1 text-xs text-slate-300">
-                    <label class="flex items-center gap-1.5 cursor-pointer">
-                        <input type="checkbox" id="chk_nazar" checked onchange="calculate()" class="accent-amber-500"> Nazar/Kahramanlık (+%30 Hasar)
-                    </label>
-                    <label class="flex items-center gap-1.5 cursor-pointer">
-                        <input type="checkbox" id="chk_atk_bone" onchange="calculate()" class="accent-amber-500"> Saldırı Kemiği / Şebnem (+200 ATK)
-                    </label>
+                <div>
+                    <span class="text-slate-400">Simya Seti</span>
+                    <select id="alchemy_tier" class="inp" onchange="calculate()">
+                        <option value="none">Simya Yok / Kapalı</option>
+                        <option value="mythic_mat">Mitsi Mat (+180 ATK, +9 Bec)</option>
+                        <option value="mythic_bri">Mitsi Parlak (+270 ATK, +14 Bec)</option>
+                        <option value="mythic_exc">Mitsi Kusursuz (+360 ATK, +18 Bec)</option>
+                    </select>
                 </div>
             </div>
         </div>
 
-        <!-- ORTA SÜTUN: SAVUNAN KARAKTER (RAKİP PROFİLİ) (4 Kolon) -->
-        <div class="lg:col-span-4 panel p-5 border-t-4 border-t-blue-500 space-y-5">
+        <!-- ORTA SÜTUN: SAVUNAN KARAKTER -->
+        <div class="lg:col-span-4 panel p-5 border-t-4 border-t-blue-500 space-y-4">
             <div class="flex justify-between items-center border-b border-slate-800 pb-3">
                 <h2 class="text-lg font-bold text-blue-400">🛡️ SAVUNAN (RAKİP)</h2>
                 <select id="preset_enemy" class="bg-slate-800 text-xs text-slate-200 rounded px-2 py-1 border border-slate-700" onchange="applyEnemyPreset()">
-                    <option value="custom">Hazır Rakip Şablonu Seç...</option>
-                    <option value="duel_full">1-1 Full Savunmalı Düello Çarı</option>
-                    <option value="war_tank">Lonca Savaşlık Tank (60-60-60)</option>
-                    <option value="mid_player">Orta Seviye PvP Oyuncusu</option>
+                    <option value="custom">Rakip Şablonu...</option>
+                    <option value="naked">Savunmasız Test Çarı (0 Efsun)</option>
+                    <option value="mid_player">Orta Seviye PvP (45 Sav)</option>
+                    <option value="duel_full">1-1 Full Düello (60 Sav + Kalkan)</option>
                 </select>
             </div>
 
             <div class="grid grid-cols-2 gap-3 text-xs">
                 <div>
-                    <label class="block text-slate-400 mb-1">Rakip Sınıfı</label>
-                    <select id="def_class" class="inp" onchange="calculate()">
-                        <option value="warrior">Savaşçı</option>
-                        <option value="ninja">Ninja</option>
-                        <option value="sura">Sura</option>
-                        <option value="shaman">Şaman</option>
-                        <option value="lycan">Lycan</option>
-                    </select>
+                    <label class="block text-slate-400 mb-1">Rakip Maksimum HP</label>
+                    <input type="number" id="def_hp" value="26000" class="inp" oninput="calculate()">
                 </div>
                 <div>
-                    <label class="block text-slate-400 mb-1">Rakip Maksimum HP</label>
-                    <input type="number" id="def_hp" value="32000" class="inp" oninput="calculate()">
+                    <label class="block text-slate-400 mb-1">Fiziksel Savunma (C Ekranı)</label>
+                    <input type="number" id="def_armor" value="750" class="inp" oninput="calculate()">
                 </div>
             </div>
 
             <div class="grid grid-cols-2 gap-3 text-xs">
                 <div>
-                    <label class="block text-slate-400 mb-1">Fiziksel Savunma (Defans)</label>
-                    <input type="number" id="def_armor" value="950" class="inp" oninput="calculate()">
+                    <label class="block text-slate-400 mb-1">Büyü Savunması (Stat/Zırh)</label>
+                    <input type="number" id="def_mdef" value="420" class="inp" oninput="calculate()">
                 </div>
                 <div>
-                    <label class="block text-slate-400 mb-1">Büyü Savunması (Stat/Zırh)</label>
-                    <input type="number" id="def_mdef" value="550" class="inp" oninput="calculate()">
+                    <label class="block text-slate-400 mb-1">Yarı İnsan Direnci (%)</label>
+                    <input type="number" id="def_halfhuman" value="10" class="inp" oninput="calculate()">
                 </div>
             </div>
 
             <!-- Efsun Savunmaları -->
             <div>
-                <label class="block text-xs font-bold text-slate-300 mb-2 uppercase tracking-wider">Silah & Büyü Savunmaları (%)</label>
+                <label class="block text-xs font-bold text-slate-300 mb-1.5 uppercase">Efsun Savunmaları (%)</label>
                 <div class="grid grid-cols-2 gap-2.5 text-xs">
                     <div>
-                        <span class="text-slate-400">Silah Savunması (Kılıç/Bıçak/Çan vb.)</span>
-                        <input type="number" id="def_weapon" value="60" class="inp" oninput="calculate()">
+                        <span class="text-slate-400">Silah Savunması (Kılıç/Bıçak/Ok/Çan)</span>
+                        <input type="number" id="def_weapon" value="45" class="inp" oninput="calculate()">
                     </div>
                     <div>
                         <span class="text-slate-400">Büyü Dayanıklılığı (%)</span>
-                        <input type="number" id="def_magic" value="55" class="inp" oninput="calculate()">
+                        <input type="number" id="def_magic" value="45" class="inp" oninput="calculate()">
                     </div>
                     <div>
-                        <span class="text-slate-400">Sınıf Savunması (Kalkan/Bilezik/Kemer)</span>
-                        <input type="number" id="def_vs_class" value="40" class="inp" oninput="calculate()">
+                        <span class="text-slate-400">Sınıf Savunması (Kalkan/Kemer %)</span>
+                        <input type="number" id="def_vs_class" value="20" class="inp" oninput="calculate()">
                     </div>
-                    <div>
-                        <span class="text-slate-400">Yarı İnsan Direnci (%)</span>
-                        <input type="number" id="def_halfhuman" value="20" class="inp" oninput="calculate()">
-                    </div>
-                </div>
-            </div>
-
-            <!-- Hasar Azaltma & Dirençler -->
-            <div>
-                <label class="block text-xs font-bold text-slate-300 mb-2 uppercase tracking-wider">Özel Dirençler & Simya Savunması</label>
-                <div class="grid grid-cols-2 gap-2.5 text-xs">
                     <div>
                         <span class="text-slate-400">Beceri Hasarına Karşı Koyma (%)</span>
-                        <input type="number" id="def_skill_res" value="30" class="inp" oninput="calculate()">
+                        <input type="number" id="def_skill_res" value="15" class="inp" oninput="calculate()">
                     </div>
                     <div>
                         <span class="text-slate-400">Ortalama Zarar Direnişi (%)</span>
-                        <input type="number" id="def_avg_res" value="25" class="inp" oninput="calculate()">
+                        <input type="number" id="def_avg_res" value="15" class="inp" oninput="calculate()">
                     </div>
                     <div>
                         <span class="text-slate-400">Yakın Dövüş Bloklama (%)</span>
-                        <input type="number" id="def_block" value="40" class="inp" oninput="calculate()">
-                    </div>
-                    <div>
-                        <span class="text-slate-400">Oklardan Korunma / Kaçınma (%)</span>
-                        <input type="number" id="def_dodge" value="20" class="inp" oninput="calculate()">
+                        <input type="number" id="def_block" value="25" class="inp" oninput="calculate()">
                     </div>
                 </div>
             </div>
 
-            <!-- Rakip Savunma Buffları -->
+            <!-- Rakip Koruma Skilleri -->
             <div class="bg-slate-900/60 p-3 rounded-lg border border-slate-800 space-y-2 text-xs">
                 <label class="block font-bold text-blue-400 uppercase">Rakip Aktif Koruma Skilleri</label>
-                <div class="flex flex-col gap-2 text-slate-300">
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="checkbox" id="def_dark_prot" onchange="calculate()" class="accent-blue-500"> Karanlık Koruma (Karabüyü - Hasar Azaltma)
-                    </label>
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="checkbox" id="def_blessing" onchange="calculate()" class="accent-blue-500"> Kutsama (Ejderha Gücü - Fiziksel Azaltma)
-                    </label>
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="checkbox" id="def_def_bone" onchange="calculate()" class="accent-blue-500"> Savunma Kemiği / Biyolog Çift Savunma
-                    </label>
-                </div>
+                <label class="flex items-center gap-2 cursor-pointer text-slate-300">
+                    <input type="checkbox" id="def_dark_prot" onchange="calculate()" class="accent-blue-500"> Karanlık Koruma (Karabüyü - ~%30 Hasar Azaltma)
+                </label>
+                <label class="flex items-center gap-2 cursor-pointer text-slate-300">
+                    <input type="checkbox" id="def_blessing" onchange="calculate()" class="accent-blue-500"> Kutsama (Ejderha Gücü - Fiziksel Azaltma)
+                </label>
             </div>
         </div>
 
-        <!-- SAĞ SÜTUN: ANALİZ, HASAR ÇIKTISI VE A/B KIYASLAMA (3 Kolon) -->
+        <!-- SAĞ SÜTUN: HASAR SONUÇLARI -->
         <div class="lg:col-span-3 flex flex-col gap-5">
             <div class="panel p-5 border-t-4 border-t-amber-500 space-y-4">
                 <h2 class="text-lg font-bold text-amber-400 border-b border-slate-800 pb-3">📊 SİMÜLASYON SONUCU</h2>
 
-                <!-- Seçili Beceri Hasarı -->
                 <div class="bg-slate-900 p-3.5 rounded-lg border border-slate-800">
                     <div class="flex justify-between items-center">
-                        <span id="out_skill_title" class="text-xs font-bold text-amber-400 uppercase">SEÇİLİ BECERİ (P)</span>
+                        <span id="out_skill_title" class="text-xs font-bold text-amber-400 uppercase">SEÇİLİ BECERİ</span>
                         <span id="out_skill_type_tag" class="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">FİZİKSEL</span>
                     </div>
                     <div class="mt-2 flex items-baseline justify-between">
-                        <span class="text-xs text-slate-400">Normal:</span>
+                        <span class="text-xs text-slate-400">Normal Hasar:</span>
                         <span id="out_skill_norm" class="text-2xl font-extrabold text-white">0</span>
                     </div>
                     <div class="mt-1 flex items-baseline justify-between">
@@ -338,7 +309,6 @@
                     </div>
                 </div>
 
-                <!-- Düz Vuruş (Auto Attack) Hasarı -->
                 <div class="bg-slate-900 p-3.5 rounded-lg border border-slate-800">
                     <span class="text-xs font-bold text-slate-300 uppercase">DÜZ VURUŞ (AUTO-ATTACK)</span>
                     <div class="mt-2 flex items-baseline justify-between">
@@ -351,53 +321,45 @@
                     </div>
                 </div>
 
-                <!-- Detaylı Savaş Metrikleri -->
                 <div class="space-y-2 text-xs pt-1">
                     <div class="flex justify-between">
-                        <span class="text-slate-400">Beceri Dolum Süresi (CD):</span>
+                        <span class="text-slate-400">Beceri Dolum Süresi:</span>
                         <span id="out_cd" class="font-bold text-slate-200">0.0 sn</span>
                     </div>
                     <div class="flex justify-between">
-                        <span class="text-slate-400">Efektif Büyü Bozma Sonrası Savunma:</span>
+                        <span class="text-slate-400">Büyü Bozma Sonrası Savunma:</span>
                         <span id="out_eff_mdef" class="font-bold text-purple-400">%0</span>
                     </div>
                     <div class="flex justify-between">
                         <span class="text-slate-400">Rakibi Öldürme (Tahmini):</span>
                         <span id="out_ttk" class="font-bold text-red-400">0 Beceri</span>
                     </div>
-                    <div class="flex justify-between">
-                        <span class="text-slate-400">Ortalama Saniye Başına Hasar (DPS):</span>
-                        <span id="out_dps" class="font-bold text-emerald-400">0 / sn</span>
-                    </div>
                 </div>
             </div>
 
-            <!-- A/B Efsun Kıyaslama Kutusu -->
+            <!-- Kıyaslama -->
             <div class="panel p-4 flex-1">
                 <div class="flex justify-between items-center mb-2">
-                    <h3 class="text-xs font-bold text-indigo-400 uppercase">⚖️ Efsun / Set Kıyaslaması</h3>
-                    <button onclick="clearSnapshots()" class="text-[11px] text-slate-500 hover:text-slate-300">Temizle</button>
+                    <h3 class="text-xs font-bold text-indigo-400 uppercase">⚖️ Efsun Kıyaslaması</h3>
+                    <button onclick="snapshots=[]; renderSnapshots();" class="text-[11px] text-slate-500 hover:text-slate-300">Temizle</button>
                 </div>
-                <p class="text-[11px] text-slate-400 mb-3">Efsun değiştirmeden önce "Kıyaslamaya Ekle" butonuna basarak farkı görün.</p>
-                <div id="snapshot_list" class="space-y-2 max-h-[260px] overflow-y-auto text-xs"></div>
+                <div id="snapshot_list" class="space-y-2 max-h-[240px] overflow-y-auto text-xs"></div>
             </div>
         </div>
     </div>
 
-    <!-- SUPABASE BULUT KAYITLARI -->
+    <!-- SUPABASE BULUT -->
     <div class="panel p-5 mt-5">
         <div class="flex justify-between items-center mb-3">
-            <h3 class="text-sm font-bold text-slate-200">☁️ Buluta Kaydedilmiş Build & Efsun Senaryoları (Supabase)</h3>
-            <span id="sb_status" class="text-xs text-slate-500">Bağlantı bekleniyor (Kod içindeki URL/Key alanını doldurun)</span>
+            <h3 class="text-sm font-bold text-slate-200">☁️ Kayıtlı Mobile2 Global Buildleri (Supabase)</h3>
+            <span id="sb_status" class="text-xs text-slate-500">Bağlantı bekleniyor</span>
         </div>
         <div id="cloud_list" class="grid grid-cols-1 md:grid-cols-4 gap-3 text-xs"></div>
     </div>
 </div>
 
 <script>
-// ============================================================================
-// 1. SUPABASE YAPILANDIRMASI
-// ============================================================================
+// SUPABASE
 const SUPABASE_URL = 'https://qrjqaxylbunkcatepfoh.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_UBEUc4qiRfrPXgg1udc_4Q_2uzPU6gh';
 let sbClient = null;
@@ -409,12 +371,11 @@ if (SUPABASE_URL.startsWith('http')) {
     fetchCloudBuilds();
 }
 
-// ============================================================================
-// 2. METİN2 GERÇEK SINIF, EĞİTİM VE BECERİ VERİTABANI (char_skill.cpp)
-// ============================================================================
-// type: 'phys' (Fiziksel), 'magic' (Büyülü), 'ranged' (Ok/Menzilli)
-// baseCd: Taban dolum süresi (sn)
-// formula: (atk, mag, str, dex, int, vit, k) => ham beceri hasarı
+// MOBILE2 GLOBAL DENGELİ SUNUCU KATSAYISI (Varsayılan 0.58 - Kalibrasyon ile otomatik değişir)
+let SERVER_PVP_SCALAR = parseFloat(localStorage.getItem('m2g_scalar')) || 0.58;
+let lastRawUnscaledSkill = 0;
+
+// BECERİ VERİTABANI (C Ekranındaki Saldırı Değeri zaten STR/DEX içerdiği için çift sayım önlendi)
 const SKILL_DB = {
     warrior: {
         name: "Savaşçı",
@@ -422,20 +383,20 @@ const SKILL_DB = {
             body: {
                 name: "Bedensel Savaş",
                 skills: {
-                    sword_spin: { name: "Kılıç Çevirme", type: "phys", cd: 15, calc: (a, m, str, dex, int, vit, k) => (2.0 * a + (2.0 * a + str * 4 + dex * 12) * k) },
-                    three_way:  { name: "Üç Yönlü Kesme (Toplam 3 Vuruş)", type: "phys", cd: 12, calc: (a, m, str, dex, int, vit, k) => 3 * (0.9 * a + (0.8 * a + str * 3 + dex * 4) * k) },
-                    dash:       { name: "Hamle", type: "phys", cd: 12, calc: (a, m, str, dex, int, vit, k) => (1.5 * a + (1.2 * a + str * 4 + dex * 5) * k) },
-                    will_power: { name: "Yaşama İsteği", type: "phys", cd: 15, calc: (a, m, str, dex, int, vit, k) => (1.8 * a + (1.7 * a + str * 5 + dex * 8) * k) }
+                    sword_spin: { name: "Kılıç Çevirme", type: "phys", cd: 15, calc: (a, m, str, dex, int, vit, k) => (1.6 * a + (1.8 * a + dex * 8) * k) },
+                    three_way:  { name: "Üç Yönlü Kesme (3 Vuruş)", type: "phys", cd: 12, calc: (a, m, str, dex, int, vit, k) => 3 * (0.65 * a + (0.75 * a + dex * 3) * k) },
+                    dash:       { name: "Hamle", type: "phys", cd: 12, calc: (a, m, str, dex, int, vit, k) => (1.2 * a + (1.3 * a + dex * 4) * k) },
+                    will_power: { name: "Yaşama İsteği", type: "phys", cd: 15, calc: (a, m, str, dex, int, vit, k) => (1.5 * a + (1.6 * a + dex * 6) * k) }
                 }
             },
             mental: {
                 name: "Zihinsel Savaş",
                 skills: {
-                    spirit_strike: { name: "Ruh Vuruşu", type: "phys", cd: 15, calc: (a, m, str, dex, int, vit, k) => (2.3 * a + (3.2 * a + str * 7 + dex * 4) * k) },
-                    bash:          { name: "Şiddetli Vuruş", type: "phys", cd: 15, calc: (a, m, str, dex, int, vit, k) => (1.9 * a + (2.3 * a + str * 6 + dex * 4) * k) },
-                    stump:         { name: "Güçlü Vuruş", type: "phys", cd: 12, calc: (a, m, str, dex, int, vit, k) => (1.5 * a + (1.6 * a + str * 5 + dex * 3) * k) },
-                    sword_strike:  { name: "Kılıç Darbesi", type: "phys", cd: 20, calc: (a, m, str, dex, int, vit, k) => (1.2 * a + (1.3 * a + str * 4 + dex * 3) * k) },
-                    sword_orb:     { name: "Kılıç Çemberi", type: "phys", cd: 15, calc: (a, m, str, dex, int, vit, k) => (1.7 * a + (2.0 * a + str * 6 + dex * 5) * k) }
+                    spirit_strike: { name: "Ruh Vuruşu", type: "phys", cd: 15, calc: (a, m, str, dex, int, vit, k) => (1.9 * a + (2.7 * a + str * 4) * k) },
+                    bash:          { name: "Şiddetli Vuruş", type: "phys", cd: 15, calc: (a, m, str, dex, int, vit, k) => (1.6 * a + (2.0 * a + str * 3) * k) },
+                    stump:         { name: "Güçlü Vuruş", type: "phys", cd: 12, calc: (a, m, str, dex, int, vit, k) => (1.3 * a + (1.5 * a + str * 3) * k) },
+                    sword_strike:  { name: "Kılıç Darbesi", type: "phys", cd: 20, calc: (a, m, str, dex, int, vit, k) => (1.1 * a + (1.2 * a + str * 2) * k) },
+                    sword_orb:     { name: "Kılıç Çemberi", type: "phys", cd: 15, calc: (a, m, str, dex, int, vit, k) => (1.4 * a + (1.8 * a + str * 3) * k) }
                 }
             }
         }
@@ -446,21 +407,21 @@ const SKILL_DB = {
             dagger: {
                 name: "Yakın Dövüş (Bıçakçı)",
                 skills: {
-                    ambush:        { name: "Suikast", type: "phys", cd: 15, hasBackstab: true, calc: (a, m, str, dex, int, vit, k) => (1.7 * a + (1.6 * a + dex * 9 + str * 4) * k) },
-                    fast_attack:   { name: "Hızlı Saldırı", type: "phys", cd: 15, calc: (a, m, str, dex, int, vit, k) => (1.6 * a + (1.5 * a + dex * 7 + str * 5) * k) },
-                    rolling_dagger:{ name: "Bıçak Çevirme (Tek Sekme)", type: "phys", cd: 20, calc: (a, m, str, dex, int, vit, k) => (1.8 * a + (1.7 * a + dex * 8 + str * 4) * k) },
-                    poison_cloud:  { name: "Zehirli Bulut (Büyülü Hasar)", type: "magic", cd: 25, calc: (a, m, str, dex, int, vit, k) => (1.2 * a + (1.5 * a + dex * 12 + int * 6) * k) },
-                    insidious:     { name: "Sinsi Zehir", type: "phys", cd: 15, calc: (a, m, str, dex, int, vit, k) => (1.6 * a + (1.6 * a + dex * 8 + str * 4) * k) }
+                    ambush:        { name: "Suikast", type: "phys", cd: 15, hasBackstab: true, calc: (a, m, str, dex, int, vit, k) => (1.5 * a + (1.7 * a + dex * 7) * k) },
+                    fast_attack:   { name: "Hızlı Saldırı", type: "phys", cd: 15, calc: (a, m, str, dex, int, vit, k) => (1.4 * a + (1.5 * a + dex * 5) * k) },
+                    rolling_dagger:{ name: "Bıçak Çevirme (Tek Sekme)", type: "phys", cd: 20, calc: (a, m, str, dex, int, vit, k) => (1.5 * a + (1.6 * a + dex * 6) * k) },
+                    poison_cloud:  { name: "Zehirli Bulut (Büyülü)", type: "magic", cd: 25, calc: (a, m, str, dex, int, vit, k) => (1.1 * a + (1.4 * a + dex * 9 + int * 4) * k) },
+                    insidious:     { name: "Sinsi Zehir", type: "phys", cd: 15, calc: (a, m, str, dex, int, vit, k) => (1.4 * a + (1.5 * a + dex * 6) * k) }
                 }
             },
             archery: {
                 name: "Uzak Dövüş (Okçu)",
                 skills: {
-                    fire_arrow:    { name: "Ateşli Ok", type: "ranged", cd: 15, calc: (a, m, str, dex, int, vit, k) => (2.1 * a + (2.6 * a + dex * 9 + str * 4) * k) },
-                    poison_arrow:  { name: "Zehirli Ok", type: "ranged", cd: 25, calc: (a, m, str, dex, int, vit, k) => (1.7 * a + (1.8 * a + dex * 8 + str * 4) * k) },
-                    rep_shot:      { name: "Tekrarlanan Atış", type: "ranged", cd: 15, calc: (a, m, str, dex, int, vit, k) => (1.9 * a + (2.1 * a + dex * 9 + str * 5) * k) },
-                    arrow_shower:  { name: "Ok Yağmuru", type: "ranged", cd: 15, calc: (a, m, str, dex, int, vit, k) => (1.5 * a + (1.4 * a + dex * 7 + str * 3) * k) },
-                    spark:         { name: "Kıvılcım Vuruşu", type: "ranged", cd: 15, calc: (a, m, str, dex, int, vit, k) => (1.8 * a + (1.9 * a + dex * 8 + str * 4) * k) }
+                    fire_arrow:    { name: "Ateşli Ok", type: "ranged", cd: 15, calc: (a, m, str, dex, int, vit, k) => (1.8 * a + (2.3 * a + dex * 7) * k) },
+                    poison_arrow:  { name: "Zehirli Ok", type: "ranged", cd: 25, calc: (a, m, str, dex, int, vit, k) => (1.5 * a + (1.7 * a + dex * 6) * k) },
+                    rep_shot:      { name: "Tekrarlanan Atış", type: "ranged", cd: 15, calc: (a, m, str, dex, int, vit, k) => (1.6 * a + (1.9 * a + dex * 7) * k) },
+                    arrow_shower:  { name: "Ok Yağmuru", type: "ranged", cd: 15, calc: (a, m, str, dex, int, vit, k) => (1.3 * a + (1.4 * a + dex * 5) * k) },
+                    spark:         { name: "Kıvılcım Vuruşu", type: "ranged", cd: 15, calc: (a, m, str, dex, int, vit, k) => (1.5 * a + (1.7 * a + dex * 6) * k) }
                 }
             }
         }
@@ -471,19 +432,19 @@ const SKILL_DB = {
             weaponry: {
                 name: "Büyülü Silah",
                 skills: {
-                    finger_strike: { name: "Parmak Darbesi (Delici Bonuslu)", type: "phys", cd: 10, calc: (a, m, str, dex, int, vit, k) => (1.9 * a + (2.0 * a + int * 6 + str * 5 + dex * 3) * k) },
-                    dragon_swirl:  { name: "Ejderha Dönüşü", type: "phys", cd: 15, calc: (a, m, str, dex, int, vit, k) => (1.7 * a + (1.7 * a + int * 6 + str * 4 + dex * 4) * k) },
-                    dispel:        { name: "Büyü Çözme (Sabit Büyü Hasarı)", type: "magic_true", cd: 12, calc: (a, m, str, dex, int, vit, k) => (1.1 * m + (1.2 * m + int * 11 + dex * 3) * k) }
+                    finger_strike: { name: "Parmak Darbesi", type: "phys", cd: 10, calc: (a, m, str, dex, int, vit, k) => (1.6 * a + (1.9 * a + int * 5) * k) },
+                    dragon_swirl:  { name: "Ejderha Dönüşü", type: "phys", cd: 15, calc: (a, m, str, dex, int, vit, k) => (1.5 * a + (1.6 * a + int * 5) * k) },
+                    dispel:        { name: "Büyü Çözme", type: "magic_true", cd: 12, calc: (a, m, str, dex, int, vit, k) => (1.0 * m + (1.2 * m + int * 8) * k) }
                 }
             },
             black_magic: {
                 name: "Karabüyü",
                 skills: {
-                    dark_orb:      { name: "Karanlık Küre", type: "magic", cd: 24, calc: (a, m, str, dex, int, vit, k) => (2.4 * m + (2.9 * m + int * 15 + dex * 4) * k) },
-                    flame_spirit:  { name: "Ateş Hayaleti (Tek Vuruş)", type: "magic", cd: 4, calc: (a, m, str, dex, int, vit, k) => (1.1 * m + (1.3 * m + int * 8 + dex * 2) * k) },
-                    dark_strike:   { name: "Karanlık Vuruş", type: "magic", cd: 7, calc: (a, m, str, dex, int, vit, k) => (1.4 * m + (1.5 * m + int * 9 + dex * 3) * k) },
-                    flame_strike:  { name: "Ateş Vuruş", type: "magic", cd: 12, calc: (a, m, str, dex, int, vit, k) => (1.7 * m + (1.9 * m + int * 10 + dex * 3) * k) },
-                    spirit_strike_s:{ name: "Hayalet Vuruş", type: "magic", cd: 12, calc: (a, m, str, dex, int, vit, k) => (1.3 * m + (1.4 * m + int * 8 + dex * 3) * k) }
+                    dark_orb:      { name: "Karanlık Küre", type: "magic", cd: 24, calc: (a, m, str, dex, int, vit, k) => (2.0 * m + (2.5 * m + int * 11) * k) },
+                    flame_spirit:  { name: "Ateş Hayaleti (Tek Vuruş)", type: "magic", cd: 4, calc: (a, m, str, dex, int, vit, k) => (1.0 * m + (1.2 * m + int * 6) * k) },
+                    dark_strike:   { name: "Karanlık Vuruş", type: "magic", cd: 7, calc: (a, m, str, dex, int, vit, k) => (1.3 * m + (1.4 * m + int * 7) * k) },
+                    flame_strike:  { name: "Ateş Vuruş", type: "magic", cd: 12, calc: (a, m, str, dex, int, vit, k) => (1.5 * m + (1.7 * m + int * 8) * k) },
+                    spirit_strike_s:{ name: "Hayalet Vuruş", type: "magic", cd: 12, calc: (a, m, str, dex, int, vit, k) => (1.2 * m + (1.3 * m + int * 6) * k) }
                 }
             }
         }
@@ -494,83 +455,35 @@ const SKILL_DB = {
             dragon: {
                 name: "Ejderha Gücü",
                 skills: {
-                    dragon_roar:   { name: "Ejderha Kükremesi", type: "magic", cd: 20, calc: (a, m, str, dex, int, vit, k) => (2.1 * m + (2.4 * m + int * 13 + dex * 4) * k) },
-                    shooting_drag: { name: "Ejderha Atışı", type: "magic", cd: 8, calc: (a, m, str, dex, int, vit, k) => (1.6 * m + (1.7 * m + int * 10 + dex * 3) * k) },
-                    flying_talis:  { name: "Uçan Tılsım", type: "magic", cd: 7, calc: (a, m, str, dex, int, vit, k) => (1.4 * m + (1.5 * m + int * 9 + dex * 3) * k) }
+                    dragon_roar:   { name: "Ejderha Kükremesi", type: "magic", cd: 20, calc: (a, m, str, dex, int, vit, k) => (1.8 * m + (2.1 * m + int * 10) * k) },
+                    shooting_drag: { name: "Ejderha Atışı", type: "magic", cd: 8, calc: (a, m, str, dex, int, vit, k) => (1.4 * m + (1.6 * m + int * 8) * k) },
+                    flying_talis:  { name: "Uçan Tılsım", type: "magic", cd: 7, calc: (a, m, str, dex, int, vit, k) => (1.3 * m + (1.4 * m + int * 7) * k) }
                 }
             },
             healing: {
                 name: "İyileştirme",
                 skills: {
-                    lightning_throw:{ name: "Şimşek Atma", type: "magic", cd: 7, calc: (a, m, str, dex, int, vit, k) => (1.5 * m + (1.6 * m + int * 10 + dex * 3) * k) },
-                    summon_light:  { name: "Şimşek Çağırma", type: "magic", cd: 15, calc: (a, m, str, dex, int, vit, k) => (1.9 * m + (2.2 * m + int * 12 + dex * 4) * k) },
-                    lightning_claw:{ name: "Şimşek Pençesi", type: "magic", cd: 10, calc: (a, m, str, dex, int, vit, k) => (1.4 * m + (1.5 * m + int * 9 + dex * 3) * k) }
-                }
-            }
-        }
-    },
-    lycan: {
-        name: "Lycan",
-        specs: {
-            instinct: {
-                name: "İçgüdü (Tek Eğitim)",
-                skills: {
-                    shred:       { name: "Parçalama (3 Vuruş Toplamı)", type: "phys", cd: 15, calc: (a, m, str, dex, int, vit, k) => (2.1 * a + (2.3 * a + dex * 8 + str * 5) * k) },
-                    wolf_claw:   { name: "Kurt Pençesi", type: "phys", cd: 12, calc: (a, m, str, dex, int, vit, k) => (1.8 * a + (1.9 * a + dex * 7 + str * 4) * k) },
-                    wolf_breath: { name: "Kurt Nefesi", type: "phys", cd: 15, calc: (a, m, str, dex, int, vit, k) => (1.7 * a + (1.8 * a + dex * 7 + str * 4) * k) },
-                    wolf_leap:   { name: "Kurt Atlayışı", type: "phys", cd: 12, calc: (a, m, str, dex, int, vit, k) => (1.6 * a + (1.7 * a + dex * 6 + str * 4) * k) }
+                    lightning_throw:{ name: "Şimşek Atma", type: "magic", cd: 7, calc: (a, m, str, dex, int, vit, k) => (1.4 * m + (1.5 * m + int * 8) * k) },
+                    summon_light:  { name: "Şimşek Çağırma", type: "magic", cd: 15, calc: (a, m, str, dex, int, vit, k) => (1.7 * m + (2.0 * m + int * 9) * k) },
+                    lightning_claw:{ name: "Şimşek Pençesi", type: "magic", cd: 10, calc: (a, m, str, dex, int, vit, k) => (1.3 * m + (1.4 * m + int * 7) * k) }
                 }
             }
         }
     }
 };
 
-// M, G, P Seviyelerinin Gerçek 'k' (Skill Power) Katsayıları
-const GRADE_K_MAP = {
-    "1": 0.05,
-    "15": 0.42,
-    "M1": 0.60,
-    "M5": 0.68,
-    "M10": 0.78,
-    "G1": 0.85,
-    "G5": 0.94,
-    "G10": 1.05,
-    "P": 1.25
-};
-
+const GRADE_K_MAP = { "1": 0.05, "15": 0.42, "M1": 0.60, "M4": 0.66, "M7": 0.72, "M10": 0.78, "G1": 0.85, "G5": 0.94, "G10": 1.05, "P": 1.25 };
 let snapshots = [];
 
-// ============================================================================
-// 3. ARAYÜZ DİNAMİK YÖNETİMİ
-// ============================================================================
 function onClassChange() {
     const clsKey = document.getElementById('cls_select').value;
     const specSelect = document.getElementById('spec_select');
     specSelect.innerHTML = '';
-
-    const specs = SKILL_DB[clsKey].specs;
-    for (const [key, val] of Object.entries(specs)) {
+    for (const [key, val] of Object.entries(SKILL_DB[clsKey].specs)) {
         const opt = document.createElement('option');
-        opt.value = key;
-        opt.innerText = val.name;
+        opt.value = key; opt.innerText = val.name;
         specSelect.appendChild(opt);
     }
-
-    // Sınıfa göre varsayılan statüleri optimize et
-    if (clsKey === 'sura' || clsKey === 'shaman') {
-        document.getElementById('stat_int').value = 135;
-        document.getElementById('stat_str').value = 90;
-        document.getElementById('stat_dex').value = 105;
-    } else if (clsKey === 'ninja' || clsKey === 'lycan') {
-        document.getElementById('stat_dex').value = 135;
-        document.getElementById('stat_str').value = 110;
-        document.getElementById('stat_int').value = 90;
-    } else {
-        document.getElementById('stat_str').value = 135;
-        document.getElementById('stat_dex').value = 110;
-        document.getElementById('stat_int').value = 90;
-    }
-
     onSpecChange();
 }
 
@@ -579,15 +492,11 @@ function onSpecChange() {
     const specKey = document.getElementById('spec_select').value;
     const skillSelect = document.getElementById('skill_select');
     skillSelect.innerHTML = '';
-
-    const skills = SKILL_DB[clsKey].specs[specKey].skills;
-    for (const [key, val] of Object.entries(skills)) {
+    for (const [key, val] of Object.entries(SKILL_DB[clsKey].specs[specKey].skills)) {
         const opt = document.createElement('option');
-        opt.value = key;
-        opt.innerText = val.name;
+        opt.value = key; opt.innerText = val.name;
         skillSelect.appendChild(opt);
     }
-
     updateSkillModifiers();
     calculate();
 }
@@ -598,62 +507,37 @@ function updateSkillModifiers() {
     const skillKey = document.getElementById('skill_select').value;
     const skillObj = SKILL_DB[clsKey].specs[specKey].skills[skillKey];
     const modDiv = document.getElementById('skill_modifiers');
-
     let html = '';
     if (skillObj && skillObj.hasBackstab) {
-        html += `<label class="flex items-center gap-1.5 text-amber-300 cursor-pointer"><input type="checkbox" id="mod_backstab" checked onchange="calculate()" class="accent-amber-500"> Arkadan Vuruş (+%20 Suikast Bonusu)</label>`;
-        html += `<label class="flex items-center gap-1.5 text-purple-300 cursor-pointer"><input type="checkbox" id="mod_stealth" onchange="calculate()" class="accent-purple-500"> Kamuflaj Aktif (+%55 Suikast Bonusu)</label>`;
-    }
-    if (clsKey === 'warrior' && specKey === 'body') {
-        html += `<label class="flex items-center gap-1.5 text-red-300 cursor-pointer"><input type="checkbox" id="mod_aura" checked onchange="calculate()" class="accent-red-500"> Hava Kılıcı Aktif (+550 Saldırı Değeri)</label>`;
-    }
-    if (clsKey === 'sura' && specKey === 'weaponry') {
-        html += `<label class="flex items-center gap-1.5 text-red-300 cursor-pointer"><input type="checkbox" id="mod_blade" checked onchange="calculate()" class="accent-red-500"> Büyülü Keskinlik Aktif (+620 Saldırı Değeri)</label>`;
-    }
-    if (clsKey === 'lycan') {
-        html += `<label class="flex items-center gap-1.5 text-red-300 cursor-pointer"><input type="checkbox" id="mod_crimson" checked onchange="calculate()" class="accent-red-500"> Kırmızı Kurt Ruhu Aktif (+650 Saldırı Değeri)</label>`;
+        html += `<label class="flex items-center gap-1.5 text-amber-300 cursor-pointer"><input type="checkbox" id="mod_backstab" checked onchange="calculate()" class="accent-amber-500"> Arkadan Vuruş (+%20)</label>`;
+        html += `<label class="flex items-center gap-1.5 text-purple-300 cursor-pointer"><input type="checkbox" id="mod_stealth" onchange="calculate()" class="accent-purple-500"> Kamuflaj (+%50)</label>`;
     }
     modDiv.innerHTML = html;
 }
 
 function applyEnemyPreset() {
     const p = document.getElementById('preset_enemy').value;
-    if (p === 'duel_full') {
-        document.getElementById('def_hp').value = 36000;
-        document.getElementById('def_armor').value = 1050;
-        document.getElementById('def_weapon').value = 60;
-        document.getElementById('def_magic').value = 60;
-        document.getElementById('def_vs_class').value = 50;
-        document.getElementById('def_halfhuman').value = 25;
-        document.getElementById('def_skill_res').value = 35;
-        document.getElementById('def_avg_res').value = 30;
-        document.getElementById('def_block').value = 45;
-    } else if (p === 'war_tank') {
-        document.getElementById('def_hp').value = 42000;
-        document.getElementById('def_armor').value = 1150;
-        document.getElementById('def_weapon').value = 60;
-        document.getElementById('def_magic').value = 55;
-        document.getElementById('def_vs_class').value = 25;
-        document.getElementById('def_halfhuman').value = 20;
-        document.getElementById('def_skill_res').value = 30;
-        document.getElementById('def_avg_res').value = 30;
-        document.getElementById('def_block').value = 50;
+    if (p === 'naked') {
+        document.getElementById('def_hp').value = 15000; document.getElementById('def_armor').value = 350;
+        document.getElementById('def_mdef').value = 250; document.getElementById('def_weapon').value = 0;
+        document.getElementById('def_magic').value = 0; document.getElementById('def_vs_class').value = 0;
+        document.getElementById('def_halfhuman').value = 0; document.getElementById('def_skill_res').value = 0;
     } else if (p === 'mid_player') {
-        document.getElementById('def_hp').value = 25000;
-        document.getElementById('def_armor').value = 780;
-        document.getElementById('def_weapon').value = 45;
-        document.getElementById('def_magic').value = 40;
-        document.getElementById('def_vs_class').value = 20;
-        document.getElementById('def_halfhuman').value = 10;
-        document.getElementById('def_skill_res').value = 15;
-        document.getElementById('def_avg_res').value = 15;
-        document.getElementById('def_block').value = 25;
+        document.getElementById('def_hp').value = 26000; document.getElementById('def_armor').value = 750;
+        document.getElementById('def_mdef').value = 420; document.getElementById('def_weapon').value = 45;
+        document.getElementById('def_magic').value = 45; document.getElementById('def_vs_class').value = 20;
+        document.getElementById('def_halfhuman').value = 10; document.getElementById('def_skill_res').value = 15;
+    } else if (p === 'duel_full') {
+        document.getElementById('def_hp').value = 34000; document.getElementById('def_armor').value = 950;
+        document.getElementById('def_mdef').value = 550; document.getElementById('def_weapon').value = 60;
+        document.getElementById('def_magic').value = 60; document.getElementById('def_vs_class').value = 45;
+        document.getElementById('def_halfhuman').value = 20; document.getElementById('def_skill_res').value = 30;
     }
     calculate();
 }
 
 // ============================================================================
-// 4. ANA HASAR HESAPLAMA MOTORU
+// MOBILE2 GLOBAL HESAPLAMA MOTORU (Eklemeli Parantez + PvP Scalar)
 // ============================================================================
 function calculate() {
     const clsKey = document.getElementById('cls_select').value;
@@ -665,153 +549,140 @@ function calculate() {
     const skillObj = SKILL_DB[clsKey].specs[specKey].skills[skillKey];
     if (!skillObj) return;
 
-    // Statüler
     const vit = parseFloat(document.getElementById('stat_vit').value) || 0;
     const int = parseFloat(document.getElementById('stat_int').value) || 0;
     const str = parseFloat(document.getElementById('stat_str').value) || 0;
     const dex = parseFloat(document.getElementById('stat_dex').value) || 0;
 
-    // Temel Saldırı Değerleri + Biyolog + Simya + Aktif Bufflar
     let physAtk = parseFloat(document.getElementById('atk_phys_val').value) || 0;
     let magAtk = parseFloat(document.getElementById('atk_mag_val').value) || 0;
 
-    // Biyolog Etkisi
     const bio = document.getElementById('bio_choice').value;
     if (bio === 'str_str') physAtk += 111;
     else if (bio === 'str_hp') physAtk += 51;
 
-    // Simya Etkisi (Yakut & Elmas)
     const alch = document.getElementById('alchemy_tier').value;
-    let alchSkillBon = 0;
-    let alchAvgBon = 0;
-    if (alch === 'mythic_exc') { physAtk += 360; magAtk += 180; alchSkillBon = 18; alchAvgBon = 18; }
-    else if (alch === 'mythic_bri') { physAtk += 270; magAtk += 135; alchSkillBon = 14; alchAvgBon = 14; }
-    else if (alch === 'mythic_mat') { physAtk += 180; magAtk += 90; alchSkillBon = 9; alchAvgBon = 9; }
+    let alchSkill = 0, alchAvg = 0;
+    if (alch === 'mythic_exc') { physAtk += 360; magAtk += 180; alchSkill = 18; alchAvg = 18; }
+    else if (alch === 'mythic_bri') { physAtk += 270; magAtk += 135; alchSkill = 14; alchAvg = 14; }
+    else if (alch === 'mythic_mat') { physAtk += 180; magAtk += 90; alchSkill = 9; alchAvg = 9; }
 
-    // Karakter Kendine Özel Saldırı Buffları
-    if (document.getElementById('mod_aura')?.checked) physAtk += 550;
-    if (document.getElementById('mod_blade')?.checked) physAtk += 620;
-    if (document.getElementById('mod_crimson')?.checked) physAtk += 650;
-    if (document.getElementById('chk_atk_bone').checked) { physAtk += 200; magAtk += 100; }
-
-    document.getElementById('atk_power_badge').innerText = `Efektif ATK: ${Math.round(physAtk)} | Büyü: ${Math.round(magAtk)}`;
-
-    // Saldırı Bonusları
     const halfHuman = parseFloat(document.getElementById('bon_halfhuman').value) || 0;
-    const skillBon = (parseFloat(document.getElementById('bon_skill').value) || 0) + alchSkillBon;
-    const avgBon = (parseFloat(document.getElementById('bon_avg').value) || 0) + alchAvgBon;
+    const skillBon = (parseFloat(document.getElementById('bon_skill').value) || 0) + alchSkill;
+    const avgBon = (parseFloat(document.getElementById('bon_avg').value) || 0) + alchAvg;
     const vsClass = parseFloat(document.getElementById('bon_vs_class').value) || 0;
     const critChance = Math.min(100, parseFloat(document.getElementById('bon_crit').value) || 0);
-    const pierceChance = Math.min(100, parseFloat(document.getElementById('bon_pierce').value) || 0);
     const castSpeed = parseFloat(document.getElementById('bon_cast').value) || 100;
     const antiMagic = Math.min(50, parseFloat(document.getElementById('bon_antimagic').value) || 0);
-    const hasNazar = document.getElementById('chk_nazar').checked ? 1.30 : 1.0;
+    const extraDmg = parseFloat(document.getElementById('bon_extra_dmg').value) || 0;
 
-    // Rakip Savunma Verileri
     const defHp = parseFloat(document.getElementById('def_hp').value) || 1;
-    let defArmor = parseFloat(document.getElementById('def_armor').value) || 0;
-    let defMdef = parseFloat(document.getElementById('def_mdef').value) || 0;
+    const defArmor = parseFloat(document.getElementById('def_armor').value) || 0;
+    const defMdef = parseFloat(document.getElementById('def_mdef').value) || 0;
     const defWeapon = Math.min(95, parseFloat(document.getElementById('def_weapon').value) || 0);
     const defMagic = Math.min(95, parseFloat(document.getElementById('def_magic').value) || 0);
     const defVsClass = Math.min(90, parseFloat(document.getElementById('def_vs_class').value) || 0);
     const defHalfHuman = Math.min(90, parseFloat(document.getElementById('def_halfhuman').value) || 0);
     const defSkillRes = Math.min(90, parseFloat(document.getElementById('def_skill_res').value) || 0);
     const defAvgRes = Math.min(90, parseFloat(document.getElementById('def_avg_res').value) || 0);
-    const defBlock = Math.min(90, parseFloat(document.getElementById('def_block').value) || 0);
-    const defDodge = Math.min(90, parseFloat(document.getElementById('def_dodge').value) || 0);
 
-    if (document.getElementById('def_def_bone').checked) { defArmor += 300; defMdef += 150; }
-
-    // 1. HAM BECERİ HASARI HESAPLAMA
+    // 1. HAM BECERİ DEĞERİ
     let rawSkill = skillObj.calc(physAtk, magAtk, str, dex, int, vit, k);
 
-    // Suikast Özel Çarpanları
     if (skillObj.hasBackstab) {
         if (document.getElementById('mod_backstab')?.checked) rawSkill *= 1.20;
-        if (document.getElementById('mod_stealth')?.checked) rawSkill *= 1.55;
+        if (document.getElementById('mod_stealth')?.checked) rawSkill *= 1.50;
     }
 
-    // Ortak Saldırı Çarpanları (Yarı İnsan, Sınıf Gücü, Beceri Hasarı, Nazar)
+    // MOBILE2 GLOBAL EKLEMELİ ÇARPAN MANTIĞI (Şişmeyi önleyen gerçek parantez)
     const netHalfHuman = Math.max(0, halfHuman - defHalfHuman);
     const netVsClass = Math.max(0, vsClass - defVsClass);
+    const totalOffensivePercent = netHalfHuman + netVsClass + extraDmg;
 
-    rawSkill = rawSkill * (1 + netHalfHuman / 100) * (1 + netVsClass / 100) * (1 + skillBon / 100) * hasNazar;
+    rawSkill = rawSkill * (1 + totalOffensivePercent / 100) * (1 + skillBon / 100);
 
-    // 2. SAVUNMA KESİNTİLERİ (Beceri Türüne Göre)
-    let finalSkillDmg = 0;
+    // 2. SAVUNMA KESİNTİLERİ
+    let unscaledFinalSkill = 0;
     let effectiveMagicDef = defMagic;
 
     if (skillObj.type === 'phys' || skillObj.type === 'ranged') {
-        let afterArmor = Math.max(50, rawSkill - (defArmor * 0.85));
-        let weaponOrDodge = skillObj.type === 'ranged' ? Math.min(95, defWeapon + (defDodge * 0.4)) : defWeapon;
-        finalSkillDmg = afterArmor * (1 - weaponOrDodge / 100) * (1 - defSkillRes / 100);
+        let afterArmor = Math.max(50, rawSkill - (defArmor * 0.90));
+        unscaledFinalSkill = afterArmor * (1 - defWeapon / 100) * (1 - defSkillRes / 100);
     } else if (skillObj.type === 'magic') {
-        // Büyü Bozma (Anti-Magic) rakibin büyü savunmasını kırar
         effectiveMagicDef = Math.max(0, defMagic * (1 - antiMagic / 100));
-        let afterMdef = Math.max(50, rawSkill - (defMdef * 0.75));
-        finalSkillDmg = afterMdef * (1 - effectiveMagicDef / 100) * (1 - defSkillRes / 100);
+        let afterMdef = Math.max(50, rawSkill - (defMdef * 0.85));
+        unscaledFinalSkill = afterMdef * (1 - effectiveMagicDef / 100) * (1 - defSkillRes / 100);
     } else if (skillObj.type === 'magic_true') {
-        // Büyü Çözme büyü savunmasından etkilenmez, sadece beceri direnci ve karanlık korumadan etkilenir
-        finalSkillDmg = rawSkill * (1 - defSkillRes / 100);
+        unscaledFinalSkill = rawSkill * (1 - defSkillRes / 100);
     }
 
-    // Rakip Aktif Koruma Skilleri (Karanlık Koruma / Kutsama)
-    if (document.getElementById('def_dark_prot').checked) finalSkillDmg *= 0.68; // ~%32 hasar azaltma
+    if (document.getElementById('def_dark_prot').checked) unscaledFinalSkill *= 0.70;
     if (document.getElementById('def_blessing').checked && (skillObj.type === 'phys' || skillObj.type === 'ranged')) {
-        finalSkillDmg *= 0.72;
+        unscaledFinalSkill *= 0.75;
     }
 
-    // Kritik ve Delici Beceri Sonuçları
+    // Kalibrasyon için ölçeklenmemiş ham değeri sakla
+    lastRawUnscaledSkill = Math.max(1, unscaledFinalSkill);
+
+    // SUNUCU KATSAYISI UYGULA (Mobile2 Global PvP Scale)
+    const finalSkillDmg = unscaledFinalSkill * SERVER_PVP_SCALAR;
     const skillNorm = Math.round(finalSkillDmg);
     const skillCrit = Math.round(finalSkillDmg * 2);
-    const pierceExtra = (skillObj.type === 'phys' || skillObj.type === 'ranged') ? (defArmor * 0.85 * (1 - defWeapon / 100)) : (defMdef * 0.75 * (1 - effectiveMagicDef / 100));
+    const pierceExtra = ((skillObj.type === 'phys' || skillObj.type === 'ranged') ? (defArmor * 0.85 * (1 - defWeapon / 100)) : (defMdef * 0.75 * (1 - effectiveMagicDef / 100))) * SERVER_PVP_SCALAR;
     const skillCritPierce = Math.round(skillCrit + pierceExtra);
 
-    // 3. DÜZ VURUŞ (AUTO-ATTACK) HESAPLAMA
-    let rawHit = physAtk * (1 + netHalfHuman / 100) * (1 + netVsClass / 100) * (1 + avgBon / 100) * hasNazar;
+    // 3. DÜZ VURUŞ
+    let rawHit = physAtk * (1 + totalOffensivePercent / 100) * (1 + avgBon / 100);
     let hitAfterArmor = Math.max(20, rawHit - defArmor);
-    let finalHit = hitAfterArmor * (1 - defWeapon / 100) * (1 - defAvgRes / 100);
-    if (document.getElementById('def_dark_prot').checked) finalHit *= 0.68;
-    if (document.getElementById('def_blessing').checked) finalHit *= 0.70;
+    let finalHit = hitAfterArmor * (1 - defWeapon / 100) * (1 - defAvgRes / 100) * SERVER_PVP_SCALAR;
+    if (document.getElementById('def_dark_prot').checked) finalHit *= 0.70;
+    if (document.getElementById('def_blessing').checked) finalHit *= 0.75;
 
     const hitNorm = Math.round(finalHit);
-    const hitCritPierce = Math.round((finalHit * 2) + (defArmor * (1 - defWeapon / 100)));
+    const hitCritPierce = Math.round((finalHit * 2) + (defArmor * (1 - defWeapon / 100) * SERVER_PVP_SCALAR));
 
-    // 4. METRİKLER (CD, TTK, DPS)
+    // METRİKLER
     const actualCd = (skillObj.cd / (castSpeed / 100)).toFixed(1);
     const avgSkill = (skillNorm * (1 - critChance / 100)) + (skillCrit * (critChance / 100));
     const ttk = Math.ceil(defHp / Math.max(1, avgSkill));
-    const dps = Math.round(avgSkill / Math.max(0.5, parseFloat(actualCd)));
 
-    // EKRANA YAZDIR
     document.getElementById('out_skill_title').innerText = `${skillObj.name} (${grade})`;
     document.getElementById('out_skill_type_tag').innerText = skillObj.type === 'magic' ? 'BÜYÜLÜ' : (skillObj.type === 'ranged' ? 'MENZİLLİ' : 'FİZİKSEL');
     document.getElementById('out_skill_norm').innerText = skillNorm.toLocaleString('tr-TR');
     document.getElementById('out_skill_crit').innerText = skillCrit.toLocaleString('tr-TR');
     document.getElementById('out_skill_pierce').innerText = skillCritPierce.toLocaleString('tr-TR');
-
     document.getElementById('out_hit_norm').innerText = hitNorm.toLocaleString('tr-TR');
     document.getElementById('out_hit_crit_pierce').innerText = hitCritPierce.toLocaleString('tr-TR');
-
     document.getElementById('out_cd').innerText = `${actualCd} sn`;
     document.getElementById('out_eff_mdef').innerText = `%${Math.round(effectiveMagicDef)}`;
     document.getElementById('out_ttk').innerText = `${ttk} Beceri`;
-    document.getElementById('out_dps').innerText = `${dps.toLocaleString('tr-TR')} / sn`;
+    document.getElementById('calib_badge').innerText = `Çarpan: ${SERVER_PVP_SCALAR.toFixed(2)}x (M2G)`;
 }
 
 // ============================================================================
-// 5. A/B EFSUN KIYASLAMA SİSTEMİ
+// TEK TIKLA SUNUCU KALİBRASYON FONKSİYONU
 // ============================================================================
+function calibrateServer() {
+    const realHit = parseFloat(document.getElementById('real_game_hit').value);
+    if (!realHit || realHit <= 0) {
+        alert("Lütfen oyunda attığınız gerçek normal (kritiksiz) beceri hasarını girin.");
+        return;
+    }
+    SERVER_PVP_SCALAR = realHit / lastRawUnscaledSkill;
+    localStorage.setItem('m2g_scalar', SERVER_PVP_SCALAR.toFixed(4));
+    calculate();
+    alert(`Mobile2 Global kalibrasyonu tamamlandı! Sunucu çarpanı ${SERVER_PVP_SCALAR.toFixed(2)}x olarak kilitlendi. Artık değiştireceğiniz tüm efsunlar bu gerçek oran üzerinden hesaplanacak.`);
+}
+
+// KIYASLAMA & SUPABASE
 function saveSnapshot() {
-    const clsText = document.getElementById('cls_select').selectedOptions[0].text;
     const skillText = document.getElementById('out_skill_title').innerText;
     const norm = document.getElementById('out_skill_norm').innerText;
     const crit = document.getElementById('out_skill_crit').innerText;
     const hit = document.getElementById('out_hit_norm').innerText;
     const hh = document.getElementById('bon_halfhuman').value;
     const skB = document.getElementById('bon_skill').value;
-
-    snapshots.unshift({ clsText, skillText, norm, crit, hit, hh, skB });
+    snapshots.unshift({ skillText, norm, crit, hit, hh, skB });
     renderSnapshots();
 }
 
@@ -836,42 +707,17 @@ function renderSnapshots() {
     `).join('');
 }
 
-function clearSnapshots() {
-    snapshots = [];
-    renderSnapshots();
-}
-
-// ============================================================================
-// 6. SUPABASE KAYIT VE OKUMA
-// ============================================================================
 async function saveToSupabase() {
-    if (!sbClient) {
-        alert("Supabase bağlantısı aktif değil. Kod içindeki SUPABASE_URL ve SUPABASE_ANON_KEY bilgilerini girin.");
-        return;
-    }
-    const buildName = prompt("Bu efsun seti için bir başlık girin (Örn: Karabüyü 1-1 Full Küre Seti):");
+    if (!sbClient) { alert("Supabase URL ve Key girilmemiş."); return; }
+    const buildName = prompt("Build adı girin:");
     if (!buildName) return;
-
-    const payload = {
+    const { error } = await sbClient.from('metin2_builds').insert([{
         name: buildName,
         normal_dmg: `${document.getElementById('out_skill_title').innerText}: ${document.getElementById('out_skill_norm').innerText}`,
         crit_dmg: document.getElementById('out_skill_crit').innerText,
-        data: {
-            cls: document.getElementById('cls_select').value,
-            spec: document.getElementById('spec_select').value,
-            skill: document.getElementById('skill_select').value,
-            grade: document.getElementById('skill_grade').value,
-            halfhuman: document.getElementById('bon_halfhuman').value,
-            skill_bon: document.getElementById('bon_skill').value
-        }
-    };
-
-    const { error } = await sbClient.from('metin2_builds').insert([payload]);
-    if (error) alert("Hata: " + error.message);
-    else {
-        alert("Senaryo buluta kaydedildi!");
-        fetchCloudBuilds();
-    }
+        data: { scalar: SERVER_PVP_SCALAR }
+    }]);
+    if (!error) { alert("Kaydedildi!"); fetchCloudBuilds(); }
 }
 
 async function fetchCloudBuilds() {
@@ -888,7 +734,6 @@ async function fetchCloudBuilds() {
     }
 }
 
-// Başlangıç
 onClassChange();
 renderSnapshots();
 </script>
