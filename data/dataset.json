@@ -1,0 +1,933 @@
+{
+  "meta": {
+    "name": "Mobile2 Global",
+    "version": 1,
+    "note": "ÖRNEK VERİ — gerçek oyun değerleri değildir. Yönetim panelinden kendi değerlerinle değiştir."
+  },
+  "profile": {
+    "name": "Varsayılan profil (KALİBRE EDİLMEDİ)",
+    "calibrated": false,
+    "weaponMul": 1,
+    "defenseMode": "subtract",
+    "defenseK": 100,
+    "defMul": 1,
+    "defMulNormal": 1,
+    "defMulSkill": 1,
+    "critBase": 2,
+    "pierceBase": 1,
+    "pierceDefIgnore": 100,
+    "critBeforeDefense": true,
+    "blockReduction": 50,
+    "dmgReduceCap": 90,
+    "resistCap": 90,
+    "damageFloor": 1,
+    "rounding": "floor",
+    "baseAttackSpeed": 1.5,
+    "minActionTime": 0.2,
+    "horizon": 60,
+    "maxFightTime": 300,
+    "caps": {
+      "crit_rate": 100,
+      "pierce_rate": 100,
+      "dodge_rate": 100,
+      "block_rate": 100,
+      "crit_resist": 100,
+      "pierce_resist": 100,
+      "def_ignore": 100,
+      "atk_speed": 300,
+      "cast_speed": 300,
+      "cd_reduce": 80,
+      "lifesteal": 100
+    }
+  },
+  "kinds": [
+    {
+      "key": "player",
+      "name": "Oyuncu"
+    },
+    {
+      "key": "monster",
+      "name": "Canavar"
+    },
+    {
+      "key": "boss",
+      "name": "Boss"
+    },
+    {
+      "key": "stone",
+      "name": "Metin Taşı"
+    }
+  ],
+  "stats": [
+    {
+      "key": "atk",
+      "name": "Saldırı Değeri",
+      "role": "atk",
+      "step": 10,
+      "unit": "sabit"
+    },
+    {
+      "key": "wpn_min",
+      "name": "Silah Hasarı (Min)",
+      "role": "wpn_min",
+      "step": 5,
+      "unit": "sabit"
+    },
+    {
+      "key": "wpn_max",
+      "name": "Silah Hasarı (Maks)",
+      "role": "wpn_max",
+      "step": 5,
+      "unit": "sabit"
+    },
+    {
+      "key": "atk_pct",
+      "name": "Saldırı %",
+      "role": "atk_pct",
+      "step": 1,
+      "unit": "%"
+    },
+    {
+      "key": "normal_dmg",
+      "name": "Normal Vuruş Hasarı %",
+      "role": "normal_dmg",
+      "step": 1,
+      "unit": "%"
+    },
+    {
+      "key": "skill_dmg",
+      "name": "Beceri Hasarı %",
+      "role": "skill_dmg",
+      "step": 1,
+      "unit": "%"
+    },
+    {
+      "key": "vs_monster",
+      "name": "Canavarlara Karşı Hasar %",
+      "role": "vs",
+      "step": 1,
+      "unit": "%",
+      "kind": "monster"
+    },
+    {
+      "key": "vs_boss",
+      "name": "Boss'lara Karşı Hasar %",
+      "role": "vs",
+      "step": 1,
+      "unit": "%",
+      "kind": "boss"
+    },
+    {
+      "key": "vs_stone",
+      "name": "Metin Taşlarına Karşı Hasar %",
+      "role": "vs",
+      "step": 1,
+      "unit": "%",
+      "kind": "stone"
+    },
+    {
+      "key": "vs_player",
+      "name": "İnsanlara Karşı Hasar %",
+      "role": "vs",
+      "step": 1,
+      "unit": "%",
+      "kind": "player"
+    },
+    {
+      "key": "final_dmg",
+      "name": "Son Hasar % (çarpan)",
+      "role": "final_dmg",
+      "step": 1,
+      "unit": "%"
+    },
+    {
+      "key": "crit_rate",
+      "name": "Kritik Vuruş Şansı %",
+      "role": "crit_rate",
+      "step": 1,
+      "unit": "%"
+    },
+    {
+      "key": "crit_dmg",
+      "name": "Kritik Hasar %",
+      "role": "crit_dmg",
+      "step": 5,
+      "unit": "%"
+    },
+    {
+      "key": "pierce_rate",
+      "name": "Delici Vuruş Şansı %",
+      "role": "pierce_rate",
+      "step": 1,
+      "unit": "%"
+    },
+    {
+      "key": "pierce_dmg",
+      "name": "Delici Vuruş Hasarı %",
+      "role": "pierce_dmg",
+      "step": 5,
+      "unit": "%"
+    },
+    {
+      "key": "def_ignore",
+      "name": "Savunma Yok Sayma %",
+      "role": "def_ignore",
+      "step": 1,
+      "unit": "%"
+    },
+    {
+      "key": "accuracy",
+      "name": "İsabet",
+      "role": "accuracy",
+      "step": 1,
+      "unit": "sabit"
+    },
+    {
+      "key": "atk_speed",
+      "name": "Saldırı Hızı %",
+      "role": "atk_speed",
+      "step": 1,
+      "unit": "%"
+    },
+    {
+      "key": "cast_speed",
+      "name": "Büyü/Beceri Hızı %",
+      "role": "cast_speed",
+      "step": 1,
+      "unit": "%"
+    },
+    {
+      "key": "cd_reduce",
+      "name": "Bekleme Süresi Azaltma %",
+      "role": "cd_reduce",
+      "step": 1,
+      "unit": "%"
+    },
+    {
+      "key": "lifesteal",
+      "name": "Can Çalma %",
+      "role": "lifesteal",
+      "step": 1,
+      "unit": "%"
+    },
+    {
+      "key": "def",
+      "name": "Savunma",
+      "role": "def",
+      "step": 10,
+      "unit": "sabit"
+    },
+    {
+      "key": "def_pct",
+      "name": "Savunma %",
+      "role": "def_pct",
+      "step": 1,
+      "unit": "%"
+    },
+    {
+      "key": "hp",
+      "name": "Can (HP)",
+      "role": "hp",
+      "step": 100,
+      "unit": "sabit"
+    },
+    {
+      "key": "hp_pct",
+      "name": "Can %",
+      "role": "hp_pct",
+      "step": 1,
+      "unit": "%"
+    },
+    {
+      "key": "dmg_reduce",
+      "name": "Hasar Azaltma %",
+      "role": "dmg_reduce",
+      "step": 1,
+      "unit": "%"
+    },
+    {
+      "key": "normal_resist",
+      "name": "Normal Vuruş Direnci %",
+      "role": "normal_resist",
+      "step": 1,
+      "unit": "%"
+    },
+    {
+      "key": "skill_resist",
+      "name": "Beceri Direnci %",
+      "role": "skill_resist",
+      "step": 1,
+      "unit": "%"
+    },
+    {
+      "key": "res_monster",
+      "name": "Canavar Saldırısına Direnç %",
+      "role": "res",
+      "step": 1,
+      "unit": "%",
+      "kind": "monster"
+    },
+    {
+      "key": "res_boss",
+      "name": "Boss Saldırısına Direnç %",
+      "role": "res",
+      "step": 1,
+      "unit": "%",
+      "kind": "boss"
+    },
+    {
+      "key": "res_stone",
+      "name": "Metin Saldırısına Direnç %",
+      "role": "res",
+      "step": 1,
+      "unit": "%",
+      "kind": "stone"
+    },
+    {
+      "key": "res_player",
+      "name": "İnsan Saldırısına Direnç %",
+      "role": "res",
+      "step": 1,
+      "unit": "%",
+      "kind": "player"
+    },
+    {
+      "key": "block_rate",
+      "name": "Blok Şansı %",
+      "role": "block_rate",
+      "step": 1,
+      "unit": "%"
+    },
+    {
+      "key": "block_amount",
+      "name": "Blok Miktarı (ek %)",
+      "role": "block_amount",
+      "step": 1,
+      "unit": "%"
+    },
+    {
+      "key": "dodge_rate",
+      "name": "Kaçınma %",
+      "role": "dodge_rate",
+      "step": 1,
+      "unit": "%"
+    },
+    {
+      "key": "crit_resist",
+      "name": "Kritik Şansı Direnci",
+      "role": "crit_resist",
+      "step": 1,
+      "unit": "%"
+    },
+    {
+      "key": "crit_dmg_resist",
+      "name": "Kritik Hasar Direnci %",
+      "role": "crit_dmg_resist",
+      "step": 5,
+      "unit": "%"
+    },
+    {
+      "key": "pierce_resist",
+      "name": "Delici Şansı Direnci",
+      "role": "pierce_resist",
+      "step": 1,
+      "unit": "%"
+    },
+    {
+      "key": "pierce_dmg_resist",
+      "name": "Delici Hasar Direnci %",
+      "role": "pierce_dmg_resist",
+      "step": 5,
+      "unit": "%"
+    },
+    {
+      "key": "hp_regen",
+      "name": "Can Yenilenmesi / sn",
+      "role": "hp_regen",
+      "step": 5,
+      "unit": "sabit"
+    }
+  ],
+  "classes": [
+    {
+      "id": "warrior",
+      "name": "Savaşçı",
+      "base": {
+        "atk": {
+          "b": 40,
+          "l": 3
+        },
+        "wpn_min": {
+          "b": 20,
+          "l": 0
+        },
+        "wpn_max": {
+          "b": 30,
+          "l": 0
+        },
+        "hp": {
+          "b": 800,
+          "l": 40
+        },
+        "def": {
+          "b": 20,
+          "l": 2
+        },
+        "crit_rate": {
+          "b": 5,
+          "l": 0
+        },
+        "pierce_rate": {
+          "b": 5,
+          "l": 0
+        }
+      }
+    },
+    {
+      "id": "ninja",
+      "name": "Ninja",
+      "base": {
+        "atk": {
+          "b": 38,
+          "l": 3.2
+        },
+        "wpn_min": {
+          "b": 18,
+          "l": 0
+        },
+        "wpn_max": {
+          "b": 28,
+          "l": 0
+        },
+        "hp": {
+          "b": 650,
+          "l": 32
+        },
+        "def": {
+          "b": 15,
+          "l": 1.6
+        },
+        "crit_rate": {
+          "b": 5,
+          "l": 0
+        },
+        "pierce_rate": {
+          "b": 5,
+          "l": 0
+        }
+      }
+    },
+    {
+      "id": "sura",
+      "name": "Sura",
+      "base": {
+        "atk": {
+          "b": 36,
+          "l": 3
+        },
+        "wpn_min": {
+          "b": 18,
+          "l": 0
+        },
+        "wpn_max": {
+          "b": 28,
+          "l": 0
+        },
+        "hp": {
+          "b": 700,
+          "l": 35
+        },
+        "def": {
+          "b": 18,
+          "l": 1.8
+        },
+        "crit_rate": {
+          "b": 5,
+          "l": 0
+        },
+        "pierce_rate": {
+          "b": 5,
+          "l": 0
+        }
+      }
+    },
+    {
+      "id": "shaman",
+      "name": "Şaman",
+      "base": {
+        "atk": {
+          "b": 34,
+          "l": 2.8
+        },
+        "wpn_min": {
+          "b": 16,
+          "l": 0
+        },
+        "wpn_max": {
+          "b": 26,
+          "l": 0
+        },
+        "hp": {
+          "b": 600,
+          "l": 30
+        },
+        "def": {
+          "b": 12,
+          "l": 1.4
+        },
+        "crit_rate": {
+          "b": 5,
+          "l": 0
+        },
+        "pierce_rate": {
+          "b": 5,
+          "l": 0
+        }
+      }
+    }
+  ],
+  "pointStats": [
+    {
+      "key": "str",
+      "name": "Güç",
+      "effects": [
+        {
+          "stat": "atk",
+          "per": 2
+        }
+      ]
+    },
+    {
+      "key": "vit",
+      "name": "Dayanıklılık",
+      "effects": [
+        {
+          "stat": "hp",
+          "per": 30
+        },
+        {
+          "stat": "def",
+          "per": 1
+        }
+      ]
+    },
+    {
+      "key": "dex",
+      "name": "Çeviklik",
+      "effects": [
+        {
+          "stat": "dodge_rate",
+          "per": 0.1
+        },
+        {
+          "stat": "atk",
+          "per": 1
+        }
+      ]
+    },
+    {
+      "key": "int",
+      "name": "Zeka",
+      "effects": [
+        {
+          "stat": "skill_dmg",
+          "per": 0.2
+        }
+      ]
+    }
+  ],
+  "slots": [
+    {
+      "key": "weapon",
+      "name": "Silah",
+      "enchantSlots": 5
+    },
+    {
+      "key": "helmet",
+      "name": "Kask",
+      "enchantSlots": 3
+    },
+    {
+      "key": "armor",
+      "name": "Zırh",
+      "enchantSlots": 3
+    },
+    {
+      "key": "shield",
+      "name": "Kalkan",
+      "enchantSlots": 2
+    },
+    {
+      "key": "boots",
+      "name": "Ayakkabı",
+      "enchantSlots": 2
+    },
+    {
+      "key": "bracelet",
+      "name": "Bilezik",
+      "enchantSlots": 2
+    },
+    {
+      "key": "necklace",
+      "name": "Kolye",
+      "enchantSlots": 2
+    },
+    {
+      "key": "earring",
+      "name": "Küpe",
+      "enchantSlots": 2
+    }
+  ],
+  "items": [
+    {
+      "id": "sample_sword",
+      "name": "Örnek Kılıç",
+      "slot": "weapon",
+      "stats": {
+        "wpn_min": 60,
+        "wpn_max": 90,
+        "atk": 20
+      }
+    },
+    {
+      "id": "sample_armor",
+      "name": "Örnek Zırh",
+      "slot": "armor",
+      "stats": {
+        "def": 80,
+        "hp": 400
+      }
+    },
+    {
+      "id": "sample_helmet",
+      "name": "Örnek Kask",
+      "slot": "helmet",
+      "stats": {
+        "def": 30,
+        "hp": 150
+      }
+    }
+  ],
+  "enchants": [
+    {
+      "id": "en_atk_pct",
+      "name": "Saldırı %",
+      "stat": "atk_pct",
+      "min": 3,
+      "max": 8,
+      "slots": []
+    },
+    {
+      "id": "en_crit",
+      "name": "Kritik Vuruş",
+      "stat": "crit_rate",
+      "min": 3,
+      "max": 9,
+      "slots": []
+    },
+    {
+      "id": "en_crit_dmg",
+      "name": "Kritik Hasar",
+      "stat": "crit_dmg",
+      "min": 5,
+      "max": 20,
+      "slots": []
+    },
+    {
+      "id": "en_pierce",
+      "name": "Delici Vuruş",
+      "stat": "pierce_rate",
+      "min": 3,
+      "max": 9,
+      "slots": []
+    },
+    {
+      "id": "en_pierce_dmg",
+      "name": "Delici Hasar",
+      "stat": "pierce_dmg",
+      "min": 5,
+      "max": 20,
+      "slots": []
+    },
+    {
+      "id": "en_normal",
+      "name": "Normal Vuruş Hasarı",
+      "stat": "normal_dmg",
+      "min": 4,
+      "max": 12,
+      "slots": []
+    },
+    {
+      "id": "en_skill",
+      "name": "Beceri Hasarı",
+      "stat": "skill_dmg",
+      "min": 4,
+      "max": 12,
+      "slots": []
+    },
+    {
+      "id": "en_boss",
+      "name": "Boss Hasarı",
+      "stat": "vs_boss",
+      "min": 4,
+      "max": 12,
+      "slots": []
+    },
+    {
+      "id": "en_monster",
+      "name": "Canavar Hasarı",
+      "stat": "vs_monster",
+      "min": 4,
+      "max": 12,
+      "slots": []
+    },
+    {
+      "id": "en_final",
+      "name": "Son Hasar",
+      "stat": "final_dmg",
+      "min": 1,
+      "max": 4,
+      "slots": []
+    },
+    {
+      "id": "en_def_ignore",
+      "name": "Savunma Delme",
+      "stat": "def_ignore",
+      "min": 2,
+      "max": 6,
+      "slots": []
+    },
+    {
+      "id": "en_as",
+      "name": "Saldırı Hızı",
+      "stat": "atk_speed",
+      "min": 2,
+      "max": 6,
+      "slots": []
+    },
+    {
+      "id": "en_hp",
+      "name": "Can",
+      "stat": "hp",
+      "min": 100,
+      "max": 400,
+      "slots": []
+    },
+    {
+      "id": "en_def",
+      "name": "Savunma",
+      "stat": "def",
+      "min": 10,
+      "max": 40,
+      "slots": []
+    },
+    {
+      "id": "en_dr",
+      "name": "Hasar Azaltma",
+      "stat": "dmg_reduce",
+      "min": 1,
+      "max": 4,
+      "slots": []
+    },
+    {
+      "id": "en_dodge",
+      "name": "Kaçınma",
+      "stat": "dodge_rate",
+      "min": 2,
+      "max": 6,
+      "slots": []
+    },
+    {
+      "id": "en_block",
+      "name": "Blok",
+      "stat": "block_rate",
+      "min": 2,
+      "max": 6,
+      "slots": []
+    },
+    {
+      "id": "en_crit_res",
+      "name": "Kritik Direnci",
+      "stat": "crit_resist",
+      "min": 2,
+      "max": 6,
+      "slots": []
+    },
+    {
+      "id": "en_res_boss",
+      "name": "Boss Direnci",
+      "stat": "res_boss",
+      "min": 3,
+      "max": 10,
+      "slots": []
+    }
+  ],
+  "skills": [
+    {
+      "id": "w1",
+      "classId": "warrior",
+      "name": "Örnek Savaşçı Becerisi 1",
+      "coefBase": 1.6,
+      "coefPerLevel": 0.12,
+      "flatBase": 0,
+      "flatPerLevel": 0,
+      "hits": 1,
+      "cast": 1,
+      "cooldown": 6,
+      "maxLevel": 20,
+      "usesWeapon": true,
+      "dmgPct": 0
+    },
+    {
+      "id": "w2",
+      "classId": "warrior",
+      "name": "Örnek Savaşçı Becerisi 2",
+      "coefBase": 0.9,
+      "coefPerLevel": 0.07,
+      "flatBase": 0,
+      "flatPerLevel": 0,
+      "hits": 3,
+      "cast": 1.4,
+      "cooldown": 10,
+      "maxLevel": 20,
+      "usesWeapon": true,
+      "dmgPct": 0
+    },
+    {
+      "id": "n1",
+      "classId": "ninja",
+      "name": "Örnek Ninja Becerisi 1",
+      "coefBase": 1.5,
+      "coefPerLevel": 0.11,
+      "flatBase": 0,
+      "flatPerLevel": 0,
+      "hits": 1,
+      "cast": 0.9,
+      "cooldown": 5,
+      "maxLevel": 20,
+      "usesWeapon": true,
+      "dmgPct": 0
+    },
+    {
+      "id": "n2",
+      "classId": "ninja",
+      "name": "Örnek Ninja Becerisi 2",
+      "coefBase": 0.8,
+      "coefPerLevel": 0.06,
+      "flatBase": 0,
+      "flatPerLevel": 0,
+      "hits": 4,
+      "cast": 1.5,
+      "cooldown": 11,
+      "maxLevel": 20,
+      "usesWeapon": true,
+      "dmgPct": 0
+    },
+    {
+      "id": "s1",
+      "classId": "sura",
+      "name": "Örnek Sura Becerisi 1",
+      "coefBase": 1.7,
+      "coefPerLevel": 0.12,
+      "flatBase": 0,
+      "flatPerLevel": 0,
+      "hits": 1,
+      "cast": 1.1,
+      "cooldown": 6,
+      "maxLevel": 20,
+      "usesWeapon": true,
+      "dmgPct": 0
+    },
+    {
+      "id": "s2",
+      "classId": "sura",
+      "name": "Örnek Sura Becerisi 2",
+      "coefBase": 1,
+      "coefPerLevel": 0.08,
+      "flatBase": 0,
+      "flatPerLevel": 0,
+      "hits": 2,
+      "cast": 1.3,
+      "cooldown": 9,
+      "maxLevel": 20,
+      "usesWeapon": true,
+      "dmgPct": 0
+    },
+    {
+      "id": "c1",
+      "classId": "shaman",
+      "name": "Örnek Şaman Becerisi 1",
+      "coefBase": 1.8,
+      "coefPerLevel": 0.13,
+      "flatBase": 0,
+      "flatPerLevel": 0,
+      "hits": 1,
+      "cast": 1.2,
+      "cooldown": 6,
+      "maxLevel": 20,
+      "usesWeapon": false,
+      "dmgPct": 0
+    },
+    {
+      "id": "c2",
+      "classId": "shaman",
+      "name": "Örnek Şaman Becerisi 2",
+      "coefBase": 1.1,
+      "coefPerLevel": 0.08,
+      "flatBase": 0,
+      "flatPerLevel": 0,
+      "hits": 2,
+      "cast": 1.4,
+      "cooldown": 9,
+      "maxLevel": 20,
+      "usesWeapon": false,
+      "dmgPct": 0
+    }
+  ],
+  "targets": [
+    {
+      "id": "t_monster",
+      "name": "Örnek Canavar",
+      "kind": "monster",
+      "level": 50,
+      "stats": {
+        "hp": 6000,
+        "def": 60,
+        "atk": 60,
+        "wpn_min": 10,
+        "wpn_max": 20
+      },
+      "rotation": [],
+      "basic": true
+    },
+    {
+      "id": "t_boss",
+      "name": "Örnek Boss",
+      "kind": "boss",
+      "level": 60,
+      "stats": {
+        "hp": 90000,
+        "def": 220,
+        "atk": 180,
+        "wpn_min": 40,
+        "wpn_max": 70,
+        "crit_rate": 10
+      },
+      "rotation": [],
+      "basic": true
+    },
+    {
+      "id": "t_stone",
+      "name": "Örnek Metin Taşı",
+      "kind": "stone",
+      "level": 55,
+      "stats": {
+        "hp": 40000,
+        "def": 150
+      },
+      "rotation": [],
+      "basic": false
+    }
+  ],
+  "calibration": []
+}
