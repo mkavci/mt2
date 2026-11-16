@@ -6,7 +6,7 @@
  *  ASLA service_role anahtarını buraya koyma.
  * ===================================================================== */
 window.M2_CONFIG = {
-  SUPABASE_URL: '',        // örn: https://abcdxyz.supabase.co
-  SUPABASE_ANON_KEY: '',   // Project Settings → API → anon public
+  SUPABASE_URL: 'https://qrjqaxylbunkcatepfoh.supabase.co',        // örn: https://abcdxyz.supabase.co
+  SUPABASE_ANON_KEY: 'sb_publishable_UBEUc4qiRfrPXgg1udc_4Q_2uzPU6gh',   // Project Settings → API → anon public
   DATASET_ID: 'main',
 };
